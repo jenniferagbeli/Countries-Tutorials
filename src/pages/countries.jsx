@@ -37,6 +37,7 @@ export default function Countries() {
 
 console.log('------------------------------------')
 
+// display 5 countries; everything is inside the async function//
 let fiveItems = countriesBox.slice(0, 5).map((item)=> {
     console.log('yea', item)
     return item;
@@ -48,15 +49,12 @@ setFiveItems(fiveItems)
 
 console.log({fiveItems});
 return countriesBox;
-    
+
 }
-    
     displayAllCountries()
-//   console.log("countries", countries)
 
-    
-    
 
+// WHAT DISPLAYS ON THE BROWSER//
     return (
         <>
         < Navbar />
