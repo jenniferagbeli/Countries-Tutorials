@@ -1,57 +1,36 @@
 import React from "react";
 import Navbar  from "../components/navbar";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function Countries() {
-    // import useState and type this//
-    const [fiveItems, setFiveItems] = useState([])
 
-    const url = 'https://restcountries.com/v3.1/all'
+const url = 'https://restcountries.com/v3.1/all'
+console.log(url);
 
-    
+                    
 
-                                     // YESTERDAY PRAcTICALS // 5/03/24 //DISPLAYING THE COUNTRIES//
-    // function displayCountries() {
-    //    let allCountries = fetch(url).then((response) => {
-    //        console.log('country',response.json())
-    //    })
-    // }
-    //  displayCountries()
+// 8-3-24 // Displaying on the screen
+const [country,setCountry] = useState([]);
 
-             // or//
-// async function displayAllCountries(){
-//     const countries = await fetch(url)
-//     console.log("countries", countries.json())
-// }
-// displayAllCountries()
-
-
-                                             // TODAYS PRACTICALS // 6/03/24// INSTALLED AXIOS//
-
- // store it in a container and display 5 items
+useEffect(() =>{ 
     async function displayAllCountries(){
-         const countries = await axios.get(url)
-         const countriesBox = countries.data;
+        try {
+            const countries = await axios.get(url);
+        const countriesBox = countries.data;
 
-console.log('------------------------------------')
-
-// display 5 countries; everything is inside the async function//
-let fiveItems = countriesBox.slice(0, 5).map((item)=> {
-    console.log('yea', item)
-    return item;
-}); 
-console.log('------------------------------------')
-
-// for the useState//
-setFiveItems(fiveItems)
-
-console.log({fiveItems});
-return countriesBox;
-
+        setCountry(countriesBox)
+        } catch (error) {
+            console.log("error", error);
+        }
+        
 }
-    displayAllCountries()
+displayAllCountries();
+}, []);
+
+console.log('country', country);
 
 
 // WHAT DISPLAYS ON THE BROWSER//
@@ -59,15 +38,18 @@ return countriesBox;
         <>
         < Navbar />
         <h1>Welcome to Countries</h1>
-        <div>
-            <ul>
-                {fiveItems.map((item)=> {
-                    let value = item.name.common
-                    return value })}
-            </ul>
+        <div className="outer-div">
+            {country.slice(0 , 20).map((item) => (
+                <div className="inner-div">
+                    <img src={item.flags.png} alt={item.flags.alt} className="flag-img"/>
+                    <h2>{item.name.common}</h2>
+                <h3>{item.name.official}</h3>
+                <button className="countryButton">
+                    <Link to={`/country/${item.name.common}`}>View More</Link>
+                </button>
+                    </div>
+            ) )}
         </div>
         </>
-        
-    )
-    
-};
+    );   
+}
